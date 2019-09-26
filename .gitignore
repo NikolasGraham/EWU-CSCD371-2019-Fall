@@ -354,3 +354,8 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/csharp
+
+# Mac specific files
+.DS_Store
+
+*.sqlite
