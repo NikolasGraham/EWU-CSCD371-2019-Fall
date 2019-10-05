@@ -84,7 +84,10 @@ namespace PrincessBrideTrivia.Tests
                 Question[] questions = Program.LoadQuestions(filePath);
 
                 // Assert 
-                Assert.IsTrue(questions[0] != null);
+                foreach(Question q in questions){
+                    Assert.IsTrue(q != null);
+                }
+                
             }
             finally
             {
