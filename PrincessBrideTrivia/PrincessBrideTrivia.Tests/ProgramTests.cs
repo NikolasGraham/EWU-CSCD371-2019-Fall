@@ -75,10 +75,11 @@ namespace PrincessBrideTrivia.Tests
         [TestMethod]
         public void QuestionsAreNotNull_ReturnsTrueIfSuccess()
         {
-            string filePath = "Trivia.txt";
+            string filePath = Path.GetRandomFileName();
             try
             {
                 // Arrange
+                GenerateQuestionsFile(filePath, 2);
 
                 // Act
                 Question[] questions = Program.LoadQuestions(filePath);
