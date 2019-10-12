@@ -4,8 +4,8 @@
     {
         public BaseLogger CreateLogger(string className)
         {
-            
-            return null;
+            BaseLogger returnLogger = new FileLogger();
+            return returnLogger;
         }
     }
 }
