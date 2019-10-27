@@ -1,28 +1,47 @@
-# EWU-CSCD371-2019-Fall
-## Assignment 3
-For this assignment we are going to unfortunately just do some academic exercises to make sure
-we understand polymorphism and pattern matching. Some initial code has already been provided
-(no, it does not compile, and that is expected).
+# Assignment 4
 
-### Part 1 - Shopping List (cuz everyone needs more lists)
-- A static class named Printer has a static Print method on it that accepts an Item class and a TextWriter
-- There is an existing abstract class named Item which has an abstract method named PrintInfo
-- There is an existing class named Food which inherits from Item
-  - Using polymorphism, implement Food so that it will utilize PrintInfo to print the food's
-  information as "&lt;upc&gt; - &lt;brand&gt;"
-- Create another class called Television that has a Size and Manufacturer property on it.
-Again, using polymorphism, allow this class to print out its information as "&lt;Manufacturer&gt; - &lt;Size&gt;"
+The purpose of this assignment is to focus on unit testing with the following concepts:
 
-### Part 2 - Big Bang Theory Fun
-- An existing class called Actor has been created. This is to be treated as a class you are not
-allowed to modify (consider it a third party created class)
-- Create at least 3 classes (Penny, Sheldon, Raj) that all inherit from the Actor class
-- Create a static class that has an extension method for Actor on it called "Speak" that will use
-pattern matching to call each of the specific classes that inherit from Actor
-   - Now anyone who has seen Big Bang Theory before Raj got cured knows that Raj cannot speak when
-women are around, so make sure that he only says something when WomenArePresent is false. If
-WomenArePresent happens to be true, he can only "mumble" (logic should be expressed in the switch statement, not the method that takes care of what he says - meaning, there should be 2 methods that exist for Raj)
+- Leveraging a mock object rather than testing multiple units or IO
+- Working with data driven tests.
+- Working with code analysis
+- Nullable reference types
 
-### Extra Credit (TBD) - This will require to be submitted as a separate PR based on the original Assignment3 branch
-- Convert the Item class to be an interface instead of an abstract class
-- Implement all the same logic as Part 1, but using the interface instead of the abstract class. Since there wasn't any shared logic in the abstract class, this was probably how things should have been implemented in the first place.
+## Reading
+
+Read through Chapter 11 by the week of Oct. 28.
+Read through information on [Nullability](https://intellitectsp-my.sharepoint.com/:w:/g/personal/mark_intellitect_com/EcaeQiQnpwpJpIh6-AjD_j4BoTlc6CLCBzYuXU-EHxHkWQ?e=0RWkzh). Feel free to comment or edit the content.  **Do not share** this document outside of class.
+
+# UPDATE
+
+In order to plug into our build system, please do one of the following:
+Option 1 (Easiest): Manually apply this change to your branch - IntelliTect-Samples/EWU-CSCD371-2019-Fall@8c2317f.
+Option 2: Rebase from Assignment 4. 
+
+## Instructions
+
+- Create a *`EnvironmentConfig`* configuration class that implements `IConfig` and settings using `Environment.SetEnvironmentVariable()` and `Environment.GetEnvironmentVariable()`
+- **Settings should not persist across process settings (if this occurs you will get a 0)**
+- Implement an `FileConfig` that reads/writes settings to a config.settings file in the same directory as the application.  Settings are stored as <name>=<value>.  (You can use String.Split to retrieve individual values).
+- Do not allow null, empty string, or names with spaces or '='.  Feel free to document other assumptions using unit tests.  
+- Choose simplicity over than complexity.
+- Implement **SampleApp** to print out all the configuration settings based on hard coded values for config (iterating over the values is not supported by the interface).
+- Have the **SampleApp** print out a hard coded list of settings to the console.  You do not need to unit test invocations of `System.Console` methods.
+- Unit test the **SampleApp** using a `MockConfig` class (implementing `IConfig`) that uses settings stored in memory (such as an array or a `List<T>`)
+- Use data driven testing to work with multiple values against the config API.
+- Add code analysis to **SampleApp** address all warnings.  It is okay to appropriately disable rules such as  localization/culture rules. **Note: This is true for projects in all assignments going forward.***
+- Nullablility should be enabled at the project level for all projects and all warnings should be handled without disabling them.  Also, be sure to check for null when appropriate.  **Note: This is true for all assignments going forward.***
+- Follow the test principles described in [Unit testing best practices with .NET Core and .NET Standard](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
+  - Where an assert is a logical assert rather than a statement assert
+  - Ensure tests will run whether or not config files already exits.
+  - Be sure to clean up after all tests have run and before a new test run starts.
+
+## Extra Credit
+
+The following are options for extra credit (you don't need to do them all):
+
+- Provide a means to iterate over all the settings on a provider rather than only pulling out specific ones by name.
+- Refactor the test classes that test through `IConfig` into a base class so that the same tests can be used to test multiple.
+- Create an IConfigGroup that returns a set of setting based on wildcard filters (rather than just a single setting)
+- Provide a mock instance for `System.Console`.  (You do not need to test method invocations of `System.Console`.)
+- Create and implement an `IConfigAsync` interface (we are unlikely to cover async this quarter).
