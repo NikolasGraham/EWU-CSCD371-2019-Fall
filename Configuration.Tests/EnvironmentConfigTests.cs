@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Configuration;
 
 namespace Configuration.Tests
 {
@@ -110,6 +109,60 @@ namespace Configuration.Tests
 
         [TestMethod]
         public void EnvironmentConfig_SetEnvironmentVariable_NonNullVariables_ReturnsTrue()
+        {
+            IConfig testConfig = new EnvironmentConfig();
+
+            bool works = testConfig.SetConfigValue("testName", "testValue");
+
+            Assert.IsTrue(works);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EnvironmentConfig_GetEnvironmentVariable_NameIsNull_ReturnsFalse()
+        {
+            IConfig testConfig = new EnvironmentConfig();
+
+            bool works = testConfig.SetConfigValue(null, "testValue");
+
+            Assert.IsFalse(works);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EnvironmentConfig_GetEnvironmentVariable_NameWithEqualsSign_ReturnsFalse()
+        {
+            IConfig testConfig = new EnvironmentConfig();
+
+            bool works = testConfig.SetConfigValue("test=Nam=e", "testValue");
+
+            Assert.IsFalse(works);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EnvironmentConfig_GetEnvironmentVariable_NameWithEmptyString_ReturnsFalse()
+        {
+            IConfig testConfig = new EnvironmentConfig();
+
+            bool works = testConfig.SetConfigValue(" ", "testValue");
+
+            Assert.IsFalse(works);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EnvironmentConfig_GetEnvironmentVariable_NameWithLengthZero_ReturnsFalse()
+        {
+            IConfig testConfig = new EnvironmentConfig();
+
+            bool works = testConfig.SetConfigValue("", "testValue");
+
+            Assert.IsFalse(works);
+        }
+
+        [TestMethod]
+        public void EnvironmentConfig_GetEnvironmentVariable_GoodName_ReturnsTrue()
         {
             IConfig testConfig = new EnvironmentConfig();
 

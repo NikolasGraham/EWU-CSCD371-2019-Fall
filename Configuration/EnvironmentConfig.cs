@@ -6,10 +6,11 @@ namespace Configuration
 {
     public class EnvironmentConfig : IConfig
     {
-        public bool GetConfigValue(string name, string? value)
+        public bool GetConfigValue(string name, out string? value)
         {
             if(name is null) { throw new ArgumentNullException(nameof(name)); }
             if (name == " " || name.Length == 0) { throw new ArgumentException("No name given!"); }
+            if (name.Contains("=")) { throw new ArgumentException("Cannot have name wih equals!"); }
 
             try
             {
@@ -18,6 +19,7 @@ namespace Configuration
             }
             catch(ArgumentNullException)
             {
+                value = null;
                 return false;
             }
         }

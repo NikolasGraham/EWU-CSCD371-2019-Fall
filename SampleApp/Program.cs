@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Configuration;
+using System;
+using System.Collections.Generic;
 
 namespace SampleApp
 {
-    class Program
+    public class Program
     {
-        static void Main()
+        
+        public static void Main()
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
