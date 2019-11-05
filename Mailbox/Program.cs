@@ -43,9 +43,9 @@ namespace Mailbox
                         Console.WriteLine("Enter the last name");
                         string lastName = Console.ReadLine();
                         Console.WriteLine("What size?");
-                        if (!Enum.TryParse(Console.ReadLine(), out Size size))
+                        if (!Enum.TryParse(Console.ReadLine(), out Sizes size))
                         {
-                            size = Size.Small;
+                            size = Sizes.Small;
                         }
 
                         if (AddNewMailbox(boxes, firstName, lastName, size) is Mailbox mailbox)
@@ -89,17 +89,61 @@ namespace Mailbox
 
         public static string GetOwnersDisplay(Mailboxes mailboxes)
         {
-            
+            if(mailboxes == null)
+            {
+                throw new ArgumentNullException($"{nameof(mailboxes)}: Cannot be null!");
+            }
+
+            string returnString = "";
+            List<Person> distinctPersons = new List<Person>();
+
+            foreach(Mailbox mB in mailboxes)
+            {
+                if (!distinctPersons.Contains(mB.Owner))
+                {
+                    distinctPersons.Add(mB.Owner);
+                    returnString += $"{mB.Owner.ToString()}\n";
+                }
+            }
+
+            return returnString;
         }
 
+        //TODO
         public static string GetMailboxDetails(Mailboxes mailboxes, int x, int y)
         {
-            
+            if (mailboxes == null)
+            {
+                throw new ArgumentNullException($"{nameof(mailboxes)}: Cannot be null!");
+            }
+
+            foreach(Mailbox mB in mailboxes)
+            {
+                if(mB.Location == (x, y))
+                {
+                    return mB.ToString();
+                }
+            }
+            return null;
         }
 
-        public static Mailbox AddNewMailbox(Mailboxes mailboxes, string firstName, string lastName, Size size)
+        public static Mailbox AddNewMailbox(Mailboxes mailboxes, string firstName, string lastName, Sizes size)
         {
-            
+            Person person = new Person(firstName, lastName);
+
+            for(int i=0; i < mailboxes.Height; i++)
+            {
+                for(int k=0; k < mailboxes.Width; k++)
+                {
+                    bool isOccupied = mailboxes.GetAdjacentPeople(i, k, out HashSet<Person> adjacentPeople);
+
+                    if (isOccupied == false && !adjacentPeople.Contains(person))
+                    {
+                        return new Mailbox(size, (i, k), person);
+                    }
+                }
+            }
+            return null;
         }
     }
 }
