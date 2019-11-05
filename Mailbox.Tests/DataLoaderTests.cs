@@ -12,51 +12,48 @@ namespace Mailbox.Tests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DataLoader_Load_StreamIsNull_ThrowNullExeption()
+        public void Load_StreamIsNull_ThrowNullException()
         {
             DataLoader dL = new DataLoader(null);
         }
 
         [TestMethod]
-        public void DataLoader_Load_NotValidJson_ReturnsNull()
+        public void Load_NotValidJson_ReturnsNull()
         {
-            string filePath = Path.GetRandomFileName();
-            Stream stream = GenerateTextFile(filePath);
+            MemoryStream stream = GenerateTextFile();
             DataLoader dL = new DataLoader(stream);
             List<Mailbox> worked = dL.Load();
 
             stream.Close();
-            File.Delete(filePath);
+
             Assert.IsNull(worked);
         }
 
         [TestMethod]
-        public void DataLoader_Load()
+        public void Load_GeneratedFile_ReturnsCorrectStringRepresentation()
         {
             string filePath = Path.GetRandomFileName();
-            Stream stream = GenerateJsonFile(filePath);
+            MemoryStream stream = GenerateJsonFile();
             DataLoader dL = new DataLoader(stream);
             List<Mailbox> returnValue = dL.Load();
             List<Mailbox> expectedValue = GenerateExpectedValue();
 
             stream.Close();
-            File.Delete(filePath);
 
             Assert.AreEqual(expectedValue.ToString(), returnValue.ToString());
         }
 
         [TestMethod]
-        public void DataLoader_Save()
+        public void Save_GenerateValidInfo_SavesCorrectly()
         {
             string filePath = Path.GetRandomFileName();
-            Stream stream = File.Open(filePath, FileMode.OpenOrCreate);
+            MemoryStream stream = new MemoryStream();
             DataLoader dL = new DataLoader(stream);
             dL.Save(GenerateExpectedValue());
             List<Mailbox> returnValue = dL.Load();
             List<Mailbox> expectedValue = GenerateExpectedValue();
 
             stream.Close();
-            File.Delete(filePath);
 
             Assert.AreEqual(expectedValue.ToString(), returnValue.ToString());
         }
@@ -73,9 +70,9 @@ namespace Mailbox.Tests
             };
         }
 
-        private Stream GenerateJsonFile(string filePath)
+        private MemoryStream GenerateJsonFile()
         {
-            Stream source = File.Open(filePath, FileMode.OpenOrCreate);
+            MemoryStream source = new MemoryStream();
 
             using(StreamWriter writer = new StreamWriter(source, leaveOpen: true))
             {
@@ -88,9 +85,9 @@ namespace Mailbox.Tests
             return source;
         }
 
-        private Stream GenerateTextFile(string filePath)
+        private MemoryStream GenerateTextFile()
         {
-            Stream source = File.Open(filePath, FileMode.OpenOrCreate);
+            MemoryStream source = new MemoryStream();
 
             using (StreamWriter writer = new StreamWriter(source, leaveOpen: true))
             {
