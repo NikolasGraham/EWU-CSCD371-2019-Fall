@@ -7,7 +7,6 @@ namespace Assignment6
     public class ArrayCollection<T> : ICollection<T>
     {
         public int Capacity { get; }
-        private int CurrentCount { get; set; }
 
         private List<T> _Items;
 
@@ -22,13 +21,10 @@ namespace Assignment6
             _Items = new List<T>(width);
         }
 
-        public int Count => CurrentCount;
+        public int Count => _Items.Count;
 
         public bool IsReadOnly => false;
 
-        // For the add method, I'm leaving it up to the user to correctly check for
-        // If the collection is maxed before adding into it as I don't see it being more useful
-        // To throw an exception over leaving that up to the user to decide that functionality
         public void Add(T item)
         {
             if (Count == Capacity)
@@ -40,7 +36,6 @@ namespace Assignment6
                 throw new ArgumentNullException(nameof(item), "Item is null");
             }
             _Items.Add(item);
-            CurrentCount += 1;
         }
 
         public void Clear()
@@ -65,7 +60,7 @@ namespace Assignment6
                 throw new ArgumentNullException(nameof(array), "array null!");
             }
 
-            if((arrayIndex + Count-1) > array.Length)
+            if((arrayIndex + Count) > array.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(array), "Not enough space!");
             }
@@ -105,7 +100,6 @@ namespace Assignment6
                 _Items.CopyTo(tempAra, 0);
                 tempAra[index] = value;
                 _Items = new List<T>(tempAra);
-                CurrentCount++;   
             }
         }
 
