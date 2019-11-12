@@ -152,7 +152,8 @@ namespace Tests
         }
 
         [TestMethod]
-        public void Remove_NullItem()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Remove_NullItem_ItemDoesNotExistInCollection()
         {
             ArrayCollection<string> collection = new ArrayCollection<string>(5);
 

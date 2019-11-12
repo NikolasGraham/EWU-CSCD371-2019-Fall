@@ -79,7 +79,12 @@ namespace Assignment6
 
         public bool Remove(T item)
         {
-            return _Items.Remove(item);
+            if (_Items.Contains(item))
+            {
+                return _Items.Remove(item);
+            }
+
+            throw new ArgumentException(nameof(item), "Item not in list!");
         }
 
         IEnumerator IEnumerable.GetEnumerator()
