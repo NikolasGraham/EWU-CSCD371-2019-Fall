@@ -65,10 +65,7 @@ namespace Assignment6
                 throw new ArgumentOutOfRangeException(nameof(array), "Not enough space!");
             }
 
-            foreach(T item in _Items)
-            {
-                _Items.CopyTo(array, arrayIndex);
-            }
+            _Items.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<T> GetEnumerator()
