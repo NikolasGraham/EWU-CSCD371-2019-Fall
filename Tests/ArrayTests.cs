@@ -269,8 +269,6 @@ namespace Tests
 
             collection.CopyTo(array, 0);
 
-            Console.WriteLine(array);
-
             Assert.AreEqual(expectedValue.ToString(), array.ToString());
         }
     }

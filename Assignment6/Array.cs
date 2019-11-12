@@ -67,8 +67,7 @@ namespace Assignment6
 
             foreach(T item in _Items)
             {
-                array[arrayIndex] = item;
-                arrayIndex++;
+                _Items.CopyTo(array, arrayIndex);
             }
         }
 
