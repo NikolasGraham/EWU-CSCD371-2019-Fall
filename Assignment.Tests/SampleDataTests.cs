@@ -109,7 +109,6 @@ namespace Assignment.Tests
             };
             using (StreamWriter SW = new StreamWriter(TempFilePathSpokane))
             {
-                SW.WriteLine("Id,FirstName,LastName,Email,StreetAddress,City,State,Zip");
                 foreach (string line in spokane)
                 {
                     SW.WriteLine(line);
@@ -118,15 +117,9 @@ namespace Assignment.Tests
 
             SampleData SD = new SampleData(TempFilePathSpokane);
 
-            IEnumerable<string> data = SD.GetUniqueSortedListOfStatesGivenCsvRows().Skip(1);
+            IEnumerable<string> data = SD.GetUniqueSortedListOfStatesGivenCsvRows();
 
-            string[] expected = {"WA" };
-
-            string test = "";
-            foreach (string line in data)
-            {
-                test += line + " ";
-            }
+            string[] expected = {"WA"};
 
             Assert.IsTrue(data.SequenceEqual(expected));
 
