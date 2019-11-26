@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Assignment</RootNamespace>
+  </PropertyGroup>
+
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <CombinePath BasePath="$(ProjectDir)/../Assignment" Paths="Libraries">
+      <Output TaskParameter="CombinedPaths" PropertyName="LibrariesPath"/>
+    </CombinePath>    
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(LibrariesPath)"></Copy>
+  </Target>-->
+
+</Project>
