@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace ShoppingList
 {
@@ -9,7 +10,9 @@ namespace ShoppingList
     {
         public MainWindow()
         {
+            this.DataContext = new MainWindowViewModel();
             InitializeComponent();
         }
+
     }
 }
