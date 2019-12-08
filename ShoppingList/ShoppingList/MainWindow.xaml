@@ -8,14 +8,17 @@
         TextElement.FontSize="30"
         x:Name="MyWindow"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
-        Title="MainWindow" Height="450" Width="800"
-        MinHeight="350" MinWidth="650"
-        Background="Black">
+        Title="Shopping List" Height="395" Width="800"
+        MinHeight="438" MinWidth="800"
+        Background="#0D1F35">
     <Window.Resources>
         <local:VisibleDetailsConverter x:Key="VisibleDetailsConverter" />
+        <local:CrossOffConverter x:Key="CrossOffConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -24,20 +27,34 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="Enter an item..."
+        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="Enter an item..."
                    Background="#2C69B3" Foreground="white"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding ItemToAdd, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ItemToAdd, UpdateSourceTrigger=PropertyChanged}"
                  Background="#1A3555" Foreground="white"/>
-        <Button Grid.Column="1" Grid.Row="2" Content="AddItem" Command="{Binding AddItemCommand}" 
+        <Button Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Content="AddItem" Command="{Binding AddItemCommand}" 
                 Background="#2367B8" Foreground="white"/>
-        <Button Grid.Column="1" Grid.Row="3" Content="Sort" Command="{Binding SortListCommand}" 
+        <Button Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Content="Sort" Command="{Binding SortListCommand}" 
                 Background="#2367B8" Foreground="white"/>
+        
+        <Button Grid.Column="1" Grid.Row="4" Content="Load" Command="{Binding LoadListCommand}" 
+                Background="#2367B8" Foreground="white"/>
+        <Button Grid.Column="2" Grid.Row="4" Content="Save" Command="{Binding SaveListCommand}" 
+                Background="#2367B8" Foreground="white"/>
+        <TextBlock Grid.Column="3" Grid.Row="4" Grid.RowSpan="2"
+                 Background="#1A3555" Foreground="white" TextAlignment="Center">
+            <TextBlock.Text >
+                <Binding Path="CurrentList" StringFormat= "* {0} *" />
+            </TextBlock.Text >
+        </TextBlock>
 
-        <StackPanel Grid.Column="1" Grid.Row="5" Background= "#3C7ECE" 
+        <StackPanel Grid.Column="1" Grid.Row="6" Background= "#3C7ECE" Grid.ColumnSpan="2"
                     Visibility="{Binding SelectedItem, Converter={StaticResource VisibleDetailsConverter}}">
             <TextBox Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
                  Background="#1A3555" Foreground="white"/>
@@ -47,7 +64,7 @@
                 Background="#2367B8" Foreground="white"/>
         </StackPanel>
 
-        <ListBox ItemsSource="{Binding Items}" Grid.Column="0" Grid.RowSpan="6" x:Name="ShoppingList"
+        <ListBox ItemsSource="{Binding Items}" Grid.Column="0" Grid.RowSpan="9" x:Name="ShoppingList"
                  SelectedItem="{Binding SelectedItem}" Background="#195399 ">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Item}">
@@ -57,5 +74,19 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Button Grid.Column="3" Grid.Row="0" Content="List 1" Command="{Binding SelectList1Command}"
+                Background="#2367B8" Foreground="white"/>
+        <Button Grid.Column="3" Grid.Row="1" Content="List 2" Command="{Binding SelectList2Command}" 
+                Background="#2367B8" Foreground="white" />
+        <Button Grid.Column="3" Grid.Row="2" Content="List 3" Command="{Binding SelectList3Command}" 
+                Background="#2367B8" Foreground="white" />
+        <Button Grid.Column="3" Grid.Row="3" Content="List 4" Command="{Binding SelectList4Command}" 
+                Background="#2367B8" Foreground="white" />
+        <Button Grid.Column="3" Grid.Row="6" Content="Clear List" Command="{Binding ClearList}" 
+                Background="#2367B8" Foreground="white"/>
+        <Button Grid.Column="3" Grid.Row="7" Content="Delete List" Command="{Binding DeleteList}" 
+                Background="#2367B8" Foreground="white"/>
+
     </Grid>
 </Window>

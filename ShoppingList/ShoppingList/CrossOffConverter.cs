@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace ShoppingList
 {
-    public class CrossOffConerter : IValueConverter
+    public class CrossOffConverter : IValueConverter
     {
         public object Convert(object? value, Type? targetType = null, object? 
             parameter = null, CultureInfo? culture = null)

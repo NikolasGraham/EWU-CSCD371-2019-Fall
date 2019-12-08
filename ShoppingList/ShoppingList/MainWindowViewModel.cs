@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ShoppingList
@@ -24,6 +26,15 @@ namespace ShoppingList
         public ICommand AddItemCommand { get; }
         public ICommand DeleteItemCommand { get; }
         public ICommand SortListCommand { get; }
+        public ICommand SaveListCommand { get; }
+        public ICommand LoadListCommand { get; }
+
+        public ICommand SelectList1Command { get; }
+        public ICommand SelectList2Command { get; }
+        public ICommand SelectList3Command { get; }
+        public ICommand SelectList4Command { get; }
+        public ICommand ClearList { get; }
+        public ICommand DeleteList { get; }
 
         // Items
         public ObservableCollection<Item> Items { get; private set; } = new ObservableCollection<Item>();
@@ -42,11 +53,22 @@ namespace ShoppingList
             set => SetProperty(ref _SelectedItem, value);
         }
 
+        public string CurrentList { get; set; } = "NONE";
+
         public MainWindowViewModel()
         {
             AddItemCommand = new Command(OnAddItem);
             DeleteItemCommand = new Command(OnDeleteItem);
             SortListCommand = new Command(OnSortList);
+            SaveListCommand = new Command(OnSaveList);
+            LoadListCommand = new Command(OnLoadList);
+
+            SelectList1Command = new Command(SelectListOne);
+            SelectList2Command = new Command(SelectListTwo);
+            SelectList3Command = new Command(SelectListThree);
+            SelectList4Command = new Command(SelectListFour);
+            ClearList = new Command(OnClearList);
+            DeleteList = new Command(OnDeleteList);
 
             Items.Add(new Item("Apples"));
             Items.Add(new Item("Bananas"));
@@ -72,6 +94,73 @@ namespace ShoppingList
         {
             Items = new ObservableCollection<Item>(Items.OrderBy(i => i));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+        }
+
+        private void OnSaveList()
+        {
+            var file = File.Create($"shoppinglist{CurrentList}.save");
+            file.Close();
+            
+            using (StreamWriter SW = new StreamWriter($"shoppinglist{CurrentList}.save"))
+            {
+                foreach (Item item in Items)
+                {
+                    SW.WriteLine(item.Name);
+                }
+            }
+        }
+
+        private void OnLoadList()
+        {
+            if (File.Exists($"shoppinglist{CurrentList}.save"))
+            {
+                Items.Clear();
+                using (StreamReader SR = new StreamReader($"shoppinglist{CurrentList}.save"))
+                {
+                    string line;
+                    while((line = SR.ReadLine()) != null && line != "")
+                    {
+                        Items.Add(new Item(line));
+                    }
+                }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+            }
+            else //(Items.Count == 0 || !File.Exists($"shoppinglist{CurrentList}.save"))
+            {
+                MessageBox.Show("List doesn't exist, add items first!");
+            }
+        }
+
+        private void SelectListOne()
+        {
+            CurrentList = "1";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentList)));
+        }
+        private void SelectListTwo()
+        {
+            CurrentList = "2";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentList)));
+        }
+        private void SelectListThree()
+        {
+            CurrentList = "3";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentList)));
+        }
+        private void SelectListFour()
+        {
+            CurrentList = "4";
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentList)));
+        }
+
+        private void OnClearList()
+        {
+            Items.Clear();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+        }
+
+        private void OnDeleteList()
+        {
+            File.Delete($"shoppinglist{CurrentList}.save");
         }
     }
 }

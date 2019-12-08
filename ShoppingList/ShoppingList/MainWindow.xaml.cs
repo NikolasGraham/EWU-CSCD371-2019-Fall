@@ -13,6 +13,5 @@ namespace ShoppingList
             this.DataContext = new MainWindowViewModel();
             InitializeComponent();
         }
-
     }
 }
