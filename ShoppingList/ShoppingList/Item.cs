@@ -1,6 +1,6 @@
 ﻿namespace ShoppingList
 {
-    internal class Item
+    public class Item
     {
         public string Name { get; set; }
 

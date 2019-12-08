@@ -12,7 +12,7 @@
         MinHeight="300" MinWidth="650"
         Background="Black">
     <Window.Resources>
-        
+        <local:VisibleDetailsConverter x:Key="VisibleDetailsConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -35,7 +35,7 @@
                 Background="#2367B8" Foreground="white"/>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Background= "#3C7ECE" 
-                    >
+                    Visibility="{Binding SelectedItem, Converter={StaticResource VisibleDetailsConverter}}">
             <TextBox Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
                  Background="#1A3555" Foreground="white"/>
             <Button Content="Delete Item" Command="{Binding DeleteItemCommand}" 

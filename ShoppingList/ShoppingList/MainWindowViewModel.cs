@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace ShoppingList
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,7 +24,6 @@ namespace ShoppingList
         public ICommand DeleteItemCommand { get; }
 
         // Items
-
         public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
 
         private string _ItemToAdd = "";
