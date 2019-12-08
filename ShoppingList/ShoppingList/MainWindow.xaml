@@ -9,7 +9,7 @@
         x:Name="MyWindow"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         Title="MainWindow" Height="450" Width="800"
-        MinHeight="300" MinWidth="650"
+        MinHeight="350" MinWidth="650"
         Background="Black">
     <Window.Resources>
         <local:VisibleDetailsConverter x:Key="VisibleDetailsConverter" />
@@ -23,6 +23,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -33,16 +34,20 @@
                  Background="#1A3555" Foreground="white"/>
         <Button Grid.Column="1" Grid.Row="2" Content="AddItem" Command="{Binding AddItemCommand}" 
                 Background="#2367B8" Foreground="white"/>
+        <Button Grid.Column="1" Grid.Row="3" Content="Sort" Command="{Binding SortListCommand}" 
+                Background="#2367B8" Foreground="white"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="4" Background= "#3C7ECE" 
+        <StackPanel Grid.Column="1" Grid.Row="5" Background= "#3C7ECE" 
                     Visibility="{Binding SelectedItem, Converter={StaticResource VisibleDetailsConverter}}">
             <TextBox Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
                  Background="#1A3555" Foreground="white"/>
             <Button Content="Delete Item" Command="{Binding DeleteItemCommand}" 
                 Background="#2367B8" Foreground="white"/>
+            <Button Content="Cross Off" Command="{Binding DeleteItemCommand}" 
+                Background="#2367B8" Foreground="white"/>
         </StackPanel>
 
-        <ListBox ItemsSource="{Binding Items}" Grid.Column="0" Grid.RowSpan="5" x:Name="ShoppingList"
+        <ListBox ItemsSource="{Binding Items}" Grid.Column="0" Grid.RowSpan="6" x:Name="ShoppingList"
                  SelectedItem="{Binding SelectedItem}" Background="#195399 ">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Item}">

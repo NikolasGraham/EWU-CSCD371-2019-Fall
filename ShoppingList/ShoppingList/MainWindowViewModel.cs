@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -22,9 +23,10 @@ namespace ShoppingList
         // Commands
         public ICommand AddItemCommand { get; }
         public ICommand DeleteItemCommand { get; }
+        public ICommand SortListCommand { get; }
 
         // Items
-        public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
+        public ObservableCollection<Item> Items { get; private set; } = new ObservableCollection<Item>();
 
         private string _ItemToAdd = "";
         public string ItemToAdd
@@ -44,6 +46,7 @@ namespace ShoppingList
         {
             AddItemCommand = new Command(OnAddItem);
             DeleteItemCommand = new Command(OnDeleteItem);
+            SortListCommand = new Command(OnSortList);
 
             Items.Add(new Item("Apples"));
             Items.Add(new Item("Bananas"));
@@ -51,13 +54,23 @@ namespace ShoppingList
 
         private void OnAddItem()
         {
-            Items.Add(new Item(ItemToAdd));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+            if(ItemToAdd != "")
+            {
+                Items.Add(new Item(ItemToAdd));
+                ItemToAdd = "";
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+            }
         }
 
         private void OnDeleteItem()
         {
             Items.Remove(SelectedItem);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
+        }
+
+        private void OnSortList()
+        {
+            Items = new ObservableCollection<Item>(Items.OrderBy(i => i));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
         }
     }
