@@ -73,14 +73,11 @@ namespace ShoppingList
             SelectList4Command = new Command(SelectListFour);
             ClearList = new Command(OnClearList);
             DeleteList = new Command(OnDeleteList);
-
-            Items.Add(new Item("Apples"));
-            Items.Add(new Item("Bananas"));
         }
 
         private void OnAddItem()
         {
-            if(ItemToAdd != "")
+            if(!string.IsNullOrWhiteSpace(ItemToAdd))
             {
                 Items.Add(new Item(ItemToAdd));
                 ItemToAdd = "";
