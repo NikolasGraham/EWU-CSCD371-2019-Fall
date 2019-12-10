@@ -28,6 +28,8 @@ namespace ShoppingList
         public ICommand SortListCommand { get; }
         public ICommand SaveListCommand { get; }
         public ICommand LoadListCommand { get; }
+        public ICommand CrossOffCommand { get; }
+        public ICommand UnselectCommand { get; }
 
         public ICommand SelectList1Command { get; }
         public ICommand SelectList2Command { get; }
@@ -62,6 +64,8 @@ namespace ShoppingList
             SortListCommand = new Command(OnSortList);
             SaveListCommand = new Command(OnSaveList);
             LoadListCommand = new Command(OnLoadList);
+            CrossOffCommand = new Command(OnCrossOff);
+            UnselectCommand = new Command(OnUnselect);
 
             SelectList1Command = new Command(SelectListOne);
             SelectList2Command = new Command(SelectListTwo);
@@ -105,7 +109,14 @@ namespace ShoppingList
             {
                 foreach (Item item in Items)
                 {
-                    SW.WriteLine(item.Name);
+                    if(item.CrossedOff == true)
+                    {
+                        SW.WriteLine($"{item.Name}.Checked");
+                    }
+                    else
+                    {
+                        SW.WriteLine($"{item.Name}.");
+                    }
                 }
             }
         }
@@ -120,7 +131,15 @@ namespace ShoppingList
                     string line;
                     while((line = SR.ReadLine()) != null && line != "")
                     {
-                        Items.Add(new Item(line));
+                        string[] itemParts = line.Split(".");
+                        if(itemParts[1] == "Checked")
+                        {
+                            Items.Add(new Item(itemParts[0], true));
+                        }
+                        else
+                        {
+                            Items.Add(new Item(itemParts[0], false));
+                        }
                     }
                 }
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Items)));
@@ -129,6 +148,23 @@ namespace ShoppingList
             {
                 MessageBox.Show("List doesn't exist, add items first!");
             }
+        }
+
+        private void OnCrossOff()
+        {
+            int index = Items.IndexOf(SelectedItem);
+            if (SelectedItem.CrossedOff)
+            {
+                Items[index].CrossedOff = false;
+            }
+            else
+            {
+                Items[index].CrossedOff = true;
+            }
+            Item temp = Items[index];
+            Items.RemoveAt(index);
+            Items.Insert(index, temp);
+            SelectedItem = temp;
         }
 
         private void SelectListOne()
@@ -161,6 +197,11 @@ namespace ShoppingList
         private void OnDeleteList()
         {
             File.Delete($"shoppinglist{CurrentList}.save");
+        }
+
+        private void OnUnselect()
+        {
+            SelectedItem = null;
         }
     }
 }

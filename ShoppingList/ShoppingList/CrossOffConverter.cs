@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace ShoppingList
@@ -9,13 +10,13 @@ namespace ShoppingList
         public object Convert(object? value, Type? targetType = null, object? 
             parameter = null, CultureInfo? culture = null)
         {
-            if(value is Item)
+            if(value is true)
             {
-                return "Visible";
+                return TextDecorations.Strikethrough;
             }
             else
             {
-                return "Hidden";
+                return null;
             }
         }
 

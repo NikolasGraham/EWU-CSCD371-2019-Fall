@@ -5,10 +5,17 @@ namespace ShoppingList
     public class Item : IComparable
     {
         public string Name { get; set; }
+        public bool CrossedOff { get; set; }
 
         public Item(string name)
         {
             Name = name;
+        }
+
+        public Item(string name, bool crossedOff)
+        {
+            Name = name;
+            CrossedOff = crossedOff;
         }
 
         public int CompareTo(object obj)

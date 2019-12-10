@@ -8,8 +8,8 @@
         TextElement.FontSize="30"
         x:Name="MyWindow"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
-        Title="Shopping List" Height="395" Width="800"
-        MinHeight="438" MinWidth="800"
+        Title="Shopping List" Height="482" Width="800"
+        MinHeight="482" MinWidth="800"
         Background="#0D1F35">
     <Window.Resources>
         <local:VisibleDetailsConverter x:Key="VisibleDetailsConverter" />
@@ -58,9 +58,11 @@
                     Visibility="{Binding SelectedItem, Converter={StaticResource VisibleDetailsConverter}}">
             <TextBox Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"
                  Background="#1A3555" Foreground="white"/>
+            <Button Content="Cross Off" Command="{Binding CrossOffCommand}" 
+                Background="#2367B8" Foreground="white"/>
             <Button Content="Delete Item" Command="{Binding DeleteItemCommand}" 
                 Background="#2367B8" Foreground="white"/>
-            <Button Content="Cross Off" Command="{Binding DeleteItemCommand}" 
+            <Button Content="Unselect Item" Command="{Binding UnselectCommand}" 
                 Background="#2367B8" Foreground="white"/>
         </StackPanel>
 
@@ -69,7 +71,8 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Item}">
                     <StackPanel>
-                        <TextBlock Text="{Binding Name}" Foreground="white" />
+                        <TextBlock Text="{Binding Name}" Foreground="white" 
+                                   TextDecorations="{Binding CrossedOff, Converter={StaticResource CrossOffConverter}}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
